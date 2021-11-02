@@ -49,3 +49,13 @@ JOIN "orders" ON "orders"."id" = "LI"."order_id"
 JOIN "products" ON "products"."id" = "LI"."product_id"
 GROUP BY "orders"."id"
 ORDER BY "orders"."id";
+
+--10. How much has each customer spent in total?
+SELECT "first_name", "last_name", SUM("LI"."quantity" * "products"."unit_price") AS "total_order_cost" FROM "customers"
+JOIN "addresses" ON "addresses"."customer_id" = "customers"."id"
+JOIN "orders" ON "orders"."address_id" = "addresses"."id"
+JOIN "line_items" AS "LI" ON "LI"."order_id" = "orders"."id"
+JOIN "products" ON "products"."id" = "LI"."product_id"
+GROUP BY "customers"."last_name", "customers"."first_name";
+
+--11. How much has each customer spent in total? Customers who have spent $0 should still show up in the table. It should say 0, not NULL (research coalesce).
